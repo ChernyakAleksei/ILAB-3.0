@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>ILAB client</title>  
+		<script src="http://services.web-manufacture.net/Base/v1.5?join=true" type="text/javascript"></script>
+		<link href="http://services.web-manufacture.net/Styles/System.default.css" rel="stylesheet">
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<style type="text/css">
+		    body{
+		        font-size: 24px;
+		        background: black;
+		        color: white;
+		    }
+		    
+		</style>
+	</head>
+	<body>
+		<script src="http://services.web-manufacture.net/ilab.js" type="text/javascript"></script>
+		<div class='chat-box'>
+    		<pre class="content" id="ChatDiv">
+    			
+    		</pre>
+		</div>
+		<script type="text/javascript">
+		    
+		    WS.DOMload(function(){
+
+		        ServicesManager.onconnected = function(){
+                var socket = new JsonSocket(5000, '127.0.0.1');
+                socket.on('json', function (json) {   console.log(json); } );
+                socket.write('Hellow');
+    		        ServicesManager.GetService("myService", function(service, err){
+    		            //Тут вам доступен ваш сервис, или Null, если ошибка
+ 
+    		            if (!service){
+    		                ServicesManager.StartService("myService", function(service, err){
+    		                    console.log(service);       
+    		                });
+    		                return;
+    		            }
+    		            service.GetUsers('offline',function(resp){
+    		              console.log(resp);  
+    		            });
+    		            console.log(service);
+    		        })
+		        };
+		    });
+		    
+		</script>
+	</body>
+</html>
